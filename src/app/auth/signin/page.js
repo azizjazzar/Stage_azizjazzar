@@ -46,7 +46,7 @@ export default function SignIn() {
   }
 
   return (
-    <section className="flex gap-4 pt-32">
+    <section className="flex gap-4 pt-12 pb-[50px]">
       <div className="w-full lg:w-3/5 mt-24">
       
         <form onSubmit={handleSubmit} className="mt-8 mb-2 mx-auto w-80 max-w-screen-lg lg:w-1/2 pt-[100px]">
