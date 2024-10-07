@@ -25,3 +25,35 @@ body {
     text-wrap: balance;
   }
 }
+@keyframes gradientChange {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+.gradient-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background: linear-gradient(45deg, #f49daf, #8f5ffc, #f49daf);
+  background-size: 300% 300%;
+  animation: gradientChange 5s ease infinite;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.gradient-button:hover {
+  background: linear-gradient(45deg, purple, #8f5ffc, blue);
+  background-size: 300% 300%;
+}
+.overlay {
+  background: rgba(0, 0, 0, 0.6); /* Fond semi-transparent */
+  padding: 1rem; /* Ajustez le padding si nécessaire */
+  border-radius: 8px;
+}

@@ -1,11 +1,19 @@
 // src/components/Navbar.js
-"use client"; // Ajoutez cette ligne
+"use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { useSession } from "next-auth/react";
+import Dropbox from "./Dropbox"; // Utilisation du composant Dropbox
 
 const Navbar = () => {
+  const { data: session } = useSession(); // Assurez-vous d'utiliser 'data: session'
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const dropdownRef = useRef(null);
 
+  useEffect(()=>{
+    console.log(session)
+  })
   const handleScroll = () => {
     setScrolled(window.scrollY > 50);
   };
@@ -17,10 +25,30 @@ const Navbar = () => {
     };
   }, []);
 
+  useEffect(() => {
+    setDropdownOpen(false); 
+  }, [session]);
+
+  const toggleDropdown = () => {
+    setDropdownOpen((prev) => !prev);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <nav className={`fixed top-0 left-0 w-full p-4 transition-colors duration-300 ${scrolled ? 'bg-gray-900' : 'bg-custom-dark'} z-50`} style={{ userSelect: 'none' }}>
       <div className="container mx-auto flex items-center">
-        <div className="text-white text-2xl font-bold">Aziz Jazzar</div>
         <div className="lg:hidden ml-auto">
           <button className="text-white focus:outline-none">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -29,20 +57,33 @@ const Navbar = () => {
           </button>
         </div>
         <div className="lg:flex lg:items-center lg:justify-center hidden flex-grow">
-          <a href="#project" className="text-custom-gray block px-4 py-2 rounded hover:text-white transition duration-300">Projects</a>
+          <a href="/" className="text-custom-gray block px-4 py-2 rounded hover:text-white transition duration-300">Login</a>
           <a href="#about" className="text-custom-gray block px-4 py-2 rounded hover:text-white transition duration-300">About</a>
           <a href="#contact" className="text-custom-gray block px-4 py-2 rounded hover:text-white transition duration-300">Contact</a>
           <a href="#hosted" className="text-custom-gray block px-4 py-2 rounded hover:text-white transition duration-300">Hosted</a>
           <a href="#skills" className="text-custom-gray block px-4 py-2 rounded hover:text-white transition duration-300">Skills</a>
-          <a href="https://github.com/azizjazzar" className="flex items-center space-x-2 text-custom-gray  px-4 py-2 rounded hover:text-white transition duration-300">
+          <a href="https://github.com/azizjazzar" className="flex items-center space-x-2 text-custom-gray px-4 py-2 rounded hover:text-white transition duration-300">
             <img src="/img/github.png" alt="GitHub" className="w-6 h-6" />
             <span>GitHub</span>
           </a>
-          <a href="https://www.linkedin.com/in/jazzar-aziz-268141219/" className="flex items-center space-x-2 text-custom-gray  px-4 py-2 rounded hover:text-white transition duration-300">
+          <a href="https://www.linkedin.com/in/jazzar-aziz-268141219/" className="flex items-center space-x-2 text-custom-gray px-4 py-2 rounded hover:text-white transition duration-300">
             <img src="/img/linkedin.png" alt="LinkedIn" className="w-6 h-6" />
             <span>LinkedIn</span>
           </a>
         </div>
+
+        {session ? (
+          <div className="relative" ref={dropdownRef}>
+            <button onClick={toggleDropdown} className="flex items-center space-x-2">
+              <img src={session.user.image} alt="User Avatar" className="w-8 h-8 rounded-full" />
+              <span className="text-custom-gray">{session.user.nom} {session.user.prenom}</span>
+            </button>
+            {dropdownOpen && (
+              <Dropbox user={session.user} onClose={() => setDropdownOpen(false)} />
+            )}
+          </div>
+        ):null}
+
       </div>
     </nav>
   );

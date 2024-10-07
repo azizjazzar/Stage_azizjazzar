@@ -1,9 +1,10 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
+import Auth from "@/app/service/auth";
 
-// Configuration des options d'authentification
-export const authOptions = {
+const auth = new Auth();
+const authOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
@@ -20,19 +21,37 @@ export const authOptions = {
         token.accessToken = account.access_token;
         token.id = profile.sub;
         token.email = profile.email;
-        token.name = profile.name;
+        token.nom = profile.given_name || "";  
+        token.prenom = profile.family_name || "";  
+        token.datenaissance = profile.birthday || ""; 
+
+        try {
+          await auth.registerUser(profile);
+        } catch (error) {
+          console.error("Error registering user:", error);
+        }
       }
       return token;
     },
     async session({ session, token }) {
-      session.accessToken = token.accessToken;
-      session.user.id = token.id;
-      session.user.email = token.email;
-      session.user.name = token.name;
-      return session;
+      try {
+       const user = await auth.getUserByEmail(token.email);
+       console.error("hetha"+user)
+       session.user.nom = user.user.nom || null; 
+       session.user.email = user.user.email || null; 
+       session.user.prenom = user.user.prenom || null; 
+       session.user.telephone = user.user.telephone || null; 
+       session.user.adresse = user.user.adresse || null; 
+       session.user.datenaissance = user.user.datenaissance || null; 
+       return session;
+
+      } catch (error) {
+        console.error("Error registering user:", error);
+      }
+     
     },
   },
 };
 
-export const GET = NextAuth(authOptions);
-export const POST = NextAuth(authOptions);
+export const GET = (req, res) => NextAuth(req, res, authOptions);
+export const POST = (req, res) => NextAuth(req, res, authOptions);

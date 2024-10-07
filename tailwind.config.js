@@ -20,6 +20,7 @@ module.exports = {
         'custom-new': "#202938",
         'custom-low': "#151030", 
         'custom-theni': "#110d24",
+        'custom-box':"#f49daf",
       },
     },
   },
