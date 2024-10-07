@@ -288,7 +288,7 @@ const UserProfile = () => {
             </label>
           </div>
 
-          <div className="mb-4 col-span-2">
+          <div className="pl-[100px] mb-4 col-span-2 ">
             <button
               type="submit"
               className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"

@@ -23,7 +23,10 @@ export default function SignIn() {
   const handleGoogleSignIn = () => {
     signIn('google', { callbackUrl: '/profil' }); 
   };
+  const handleGITHUBSignIn = () =>{
+    signIn('github', { callbackUrl: '/profil' }); 
 
+  }
   if (status === "loading") {
     return <p>Loading...</p>; 
   }
@@ -57,7 +60,7 @@ export default function SignIn() {
               {/* SVG icon pour Google ici */}
               <span>Sign in With Google</span>
             </button>
-            <button type="button" onClick={() => signIn('github')} className="flex items-center gap-2 justify-center bg-white shadow-md py-2 px-4 rounded-full w-full">
+            <button type="button" onClick={handleGITHUBSignIn} className="flex items-center gap-2 justify-center bg-white shadow-md py-2 px-4 rounded-full w-full">
               <img src="/img/git.png" height={24} width={24} alt="" />
               <span>Sign in With GitHub</span>
             </button>
