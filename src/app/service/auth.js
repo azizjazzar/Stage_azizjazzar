@@ -23,12 +23,12 @@ class Auth {
 
 
             const response = await this.api.post("/auth/register", {
-                email: profile.email,
-                nom: profile.given_name,
-                prenom: profile.family_name,
+                email: profile.email ?? "",
+                nom: profile.given_name ?? "",
+                prenom: profile.family_name ?? "",
                 telephone: "",
                 adresse: "",
-                datenaissance: profile.birthday || "",
+                datenaissance: profile.birthday ?? "",
             }, {
                 headers: {
                     Authorization: `Bearer ${tokenBackend}`,
