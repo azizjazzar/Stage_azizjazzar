@@ -14,14 +14,7 @@ class Auth {
 
     async registerUser(profile) {
         try {
-            const payload = {
-                email: profile.email,
-                nom: profile.given_name,
-                prenom: profile.family_name,
-                datenaissance: profile.birthday || "",
-            };
-
-
+       
             const response = await this.api.post("/auth/register", {
                 email: profile.email ?? "",
                 nom: profile.given_name ?? "",
@@ -29,10 +22,6 @@ class Auth {
                 telephone: "",
                 adresse: "",
                 datenaissance: profile.birthday ?? "",
-            }, {
-                headers: {
-                    Authorization: `Bearer ${tokenBackend}`,
-                },
             });
 
             return response.data;
