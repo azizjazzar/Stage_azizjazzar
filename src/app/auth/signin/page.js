@@ -33,11 +33,11 @@ export default function SignIn() {
 
   if (session) {
     return (
-      <div className="text-center">
+      <div className="text-center pt-[90px]">
         <h2 className="font-bold text-3xl">Welcome, {session.user.name}!</h2>
         <button 
           onClick={() => signOut()} 
-          className="mt-4 bg-red-500 text-white font-bold py-2 px-4 rounded-full"
+          className="mt-4 bg-red-500 text-white font-bold py-2 px-4  "
         >
           Sign Out
         </button>
@@ -56,11 +56,12 @@ export default function SignIn() {
         </div>
 
           <div className="space-y-4 mt-8 ">
-            <button type="button" onClick={handleGoogleSignIn} className="flex items-center gap-2 justify-center bg-white shadow-md py-2 px-4 rounded-full w-full">
-              {/* SVG icon pour Google ici */}
+            <button type="button" onClick={handleGoogleSignIn} className="gradient-button flex items-center gap-2 justify-center bg-white shadow-md py-2 px-4 rounded-full w-full">
+            <img src="/img/google.webp" height={24} width={24} alt="" />
+
               <span>Sign in With Google</span>
             </button>
-            <button type="button" onClick={handleGITHUBSignIn} className="flex items-center gap-2 justify-center bg-white shadow-md py-2 px-4 rounded-full w-full">
+            <button type="button" onClick={handleGITHUBSignIn} className=" gradient-button flex items-center gap-2 justify-center bg-white shadow-md py-2 px-4 rounded-full w-full">
               <img src="/img/git.png" height={24} width={24} alt="" />
               <span>Sign in With GitHub</span>
             </button>

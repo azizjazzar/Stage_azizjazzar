@@ -57,19 +57,13 @@ const Navbar = () => {
           </button>
         </div>
         <div className="lg:flex lg:items-center lg:justify-center hidden flex-grow">
-          <a href="/" className="text-custom-gray block px-4 py-2 rounded hover:text-white transition duration-300">Login</a>
-          <a href="#about" className="text-custom-gray block px-4 py-2 rounded hover:text-white transition duration-300">About</a>
-          <a href="#contact" className="text-custom-gray block px-4 py-2 rounded hover:text-white transition duration-300">Contact</a>
-          <a href="#hosted" className="text-custom-gray block px-4 py-2 rounded hover:text-white transition duration-300">Hosted</a>
-          <a href="#skills" className="text-custom-gray block px-4 py-2 rounded hover:text-white transition duration-300">Skills</a>
+          <a href="/profil" className="text-custom-gray block px-4 py-2 rounded hover:text-white transition duration-300">Profil</a>
+       
+          <a href="https://azizjazzar.netlify.app" className="text-custom-gray block px-4 py-2 rounded hover:text-white transition duration-300">Potfolio</a>
           <a href="https://github.com/azizjazzar" className="flex items-center space-x-2 text-custom-gray px-4 py-2 rounded hover:text-white transition duration-300">
-            <img src="/img/github.png" alt="GitHub" className="w-6 h-6" />
             <span>GitHub</span>
           </a>
-          <a href="https://www.linkedin.com/in/jazzar-aziz-268141219/" className="flex items-center space-x-2 text-custom-gray px-4 py-2 rounded hover:text-white transition duration-300">
-            <img src="/img/linkedin.png" alt="LinkedIn" className="w-6 h-6" />
-            <span>LinkedIn</span>
-          </a>
+         
         </div>
 
         {session ? (
