@@ -2,8 +2,8 @@
 
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
+import adresseService from "@/app/service/adresseService"; // Import du service adresse
 import Auth from "@/app/service/auth";
-import adresseService from "../service/geolocalisation"; // Import du service d'adresse
 
 const UserProfile = () => {
   const { data: session, status } = useSession();
@@ -19,7 +19,7 @@ const UserProfile = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [addressValid, setAddressValid] = useState(true);
-  const [addressSelected, setAddressSelected] = useState(false);
+  const [addressSelected, setAddressSelected] = useState(false); 
   const [errors, setErrors] = useState({
     nom: '',
     prenom: '',
@@ -71,7 +71,7 @@ const UserProfile = () => {
       adresse: '',
     });
 
-    if (!addressSelected) {
+    if (!addressSelected) { 
       setErrors((prevErrors) => ({
         ...prevErrors,
         adresse: "Vous devez sélectionner une adresse parmi les suggestions.",
@@ -79,6 +79,7 @@ const UserProfile = () => {
       formIsValid = false;
     }
 
+    // Autres validations...
     if (!addressValid) {
       setErrors((prevErrors) => ({
         ...prevErrors,
@@ -130,16 +131,16 @@ const UserProfile = () => {
 
     if (query.length < 3) {
       setSuggestions([]);
-      setAddressSelected(false);
+      setAddressSelected(false); 
       return;
     }
 
     setLoading(true);
     try {
-      const suggestions = await adresseService.searchAddress(query); // Utilisation du service
-      setSuggestions(suggestions);
+      const results = await adresseService.searchAddress(query); // Appel au service
+      setSuggestions(results);
     } catch (error) {
-      console.error(error);
+      console.error("Erreur lors de la récupération des adresses :", error);
     } finally {
       setLoading(false);
     }
@@ -148,9 +149,9 @@ const UserProfile = () => {
   const handleSelectAddress = async (address) => {
     setUserData((prevData) => ({ ...prevData, adresse: address.properties.label }));
     setSuggestions([]);
-    setAddressSelected(true);
+    setAddressSelected(true); 
 
-    const addressCoordinates = address.geometry.coordinates;
+    const addressCoordinates = address.geometry.coordinates; 
     const parisCoordinates = [2.3522, 48.8566];
 
     const distance = calculateDistance(parisCoordinates, addressCoordinates);
@@ -167,15 +168,15 @@ const UserProfile = () => {
   };
 
   const calculateDistance = (coord1, coord2) => {
-    const R = 6371;
+    const R = 6371; 
     const dLat = (coord2[1] - coord1[1]) * (Math.PI / 180);
     const dLon = (coord2[0] - coord1[0]) * (Math.PI / 180);
-    const a =
+    const a = 
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
       Math.cos(coord1[1] * (Math.PI / 180)) * Math.cos(coord2[1] * (Math.PI / 180)) *
       Math.sin(dLon / 2) * Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
+    return R * c; 
   };
 
   if (status === "loading") {
@@ -183,7 +184,7 @@ const UserProfile = () => {
   }
 
   if (!session) {
-    return null;
+    return null; 
   }
 
   return (
@@ -229,13 +230,13 @@ const UserProfile = () => {
                 value={userData.email}
                 onChange={handleChange}
                 required
-                disabled
+                disabled 
                 className="border border-gray-300 rounded-md p-2 w-full"
               />
               {errors.email && <p className="text-red-600">{errors.email}</p>}
             </label>
           </div>
-
+          
           <div className="mb-4 col-span-2 flex justify-between">
             <label className="block mb-1 w-1/2 pr-2">
               Téléphone:
@@ -255,7 +256,6 @@ const UserProfile = () => {
                 name="datenaissance"
                 value={userData.datenaissance}
                 onChange={handleChange}
-                required
                 className="border border-gray-300 rounded-md p-2 w-full"
               />
               {errors.datenaissance && <p className="text-red-600">{errors.datenaissance}</p>}
@@ -269,38 +269,31 @@ const UserProfile = () => {
                 type="text"
                 name="adresse"
                 value={userData.adresse}
-                onChange={searchAddress}
-                required
+                onChange={searchAddress} 
                 className="border border-gray-300 rounded-md p-2 w-full"
               />
               {errors.adresse && <p className="text-red-600">{errors.adresse}</p>}
-            </label>
-            {loading && <p>Recherche en cours...</p>}
-            {!loading && suggestions.length > 0 && (
-              <ul className="border border-gray-300 rounded-md mt-2">
-                {suggestions.map((suggestion, index) => (
+              <ul>
+                {loading ? <p>Recherche...</p> : suggestions.map((suggestion, index) => (
                   <li
                     key={index}
-                    className="p-2 cursor-pointer hover:bg-gray-200"
+                    className="cursor-pointer hover:bg-gray-200"
                     onClick={() => handleSelectAddress(suggestion)}
                   >
                     {suggestion.properties.label}
                   </li>
                 ))}
               </ul>
-            )}
+            </label>
           </div>
 
           <div className="col-span-2">
-            <button
-              type="submit"
-              className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
-            >
+            <button type="submit" className="w-full bg-blue-500 text-white rounded-md py-2 px-4 hover:bg-blue-600">
               Mettre à jour le profil
             </button>
           </div>
 
-          {message && <p className="col-span-2 mt-2 text-center text-green-600">{message}</p>}
+          {message && <p className="col-span-2 text-center text-green-600">{message}</p>}
         </form>
       </div>
     </div>
