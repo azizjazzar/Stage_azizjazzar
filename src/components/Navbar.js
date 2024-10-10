@@ -3,10 +3,10 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
-import Dropbox from "./Dropbox"; // Utilisation du composant Dropbox
+import Dropbox from "./Dropbox"; 
 
 const Navbar = () => {
-  const { data: session } = useSession(); // Assurez-vous d'utiliser 'data: session'
+  const { data: session } = useSession(); 
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const dropdownRef = useRef(null);
