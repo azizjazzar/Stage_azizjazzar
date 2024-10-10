@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
-import adresseService from "@/app/service/adresseService"; // Import du service adresse
+import adresseService from "../service/geolocalisation"
 import Auth from "@/app/service/auth";
 
 const UserProfile = () => {
@@ -79,7 +79,6 @@ const UserProfile = () => {
       formIsValid = false;
     }
 
-    // Autres validations...
     if (!addressValid) {
       setErrors((prevErrors) => ({
         ...prevErrors,
@@ -137,7 +136,7 @@ const UserProfile = () => {
 
     setLoading(true);
     try {
-      const results = await adresseService.searchAddress(query); // Appel au service
+      const results = await adresseService.searchAddress(query); 
       setSuggestions(results);
     } catch (error) {
       console.error("Erreur lors de la récupération des adresses :", error);
